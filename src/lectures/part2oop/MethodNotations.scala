@@ -1,5 +1,6 @@
 package lectures.part2oop
 
+import scala.language.{postfixOps}
 /**
   * Created by Daniel.
   */
