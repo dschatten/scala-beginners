@@ -4,32 +4,34 @@ package exercises
 Abstract class to build out common List operations
 For different types of Lists
  */
-abstract class DListV2{
+abstract class DListV2 [+A]{
 
-  def head: Int
-  def tail: DListV2
+  def head: A
+  def tail: DListV2[A]
   def isEmpty: Boolean
-  def add(element: Integer): DListV2
+  def add[B >:A](element: B): DListV2[B]
 
   override def toString: String = super.toString
 }
 
 //Define as object, doesn't need to be instantiated
-object DEmptyListV2 extends DListV2{
-  def head: Int = throw new NoSuchElementException
-  def tail: DListV2 = throw new NoSuchElementException
+object DEmptyListV2 extends DListV2[Nothing]{
+  def head: Nothing = throw new NoSuchElementException
+  def tail: DListV2[Nothing] = throw new NoSuchElementException
   def isEmpty: Boolean = true
-  def add(element: Integer): DListV2 = new DConsV2(element, DEmptyListV2)
+  def add[B >: Nothing](element: B): DListV2[B] = new DConsV2(element, DEmptyListV2)
+  //  def add[B >: Nothing](element: B): MyList[B] = new Cons(element, Empty)
 
   override def toString: String = " "
 }
 
-class DConsV2(h: Int, t: DListV2) extends DListV2{
-  def head: Int = h
-  def tail: DListV2 = t
+  //case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
+class DConsV2[+A](h: A, t: DListV2[A]) extends DListV2[A]{
+  def head: A = h
+  def tail: DListV2[A] = t
   def isEmpty: Boolean = false
-  def add(element: Integer): DConsV2 = new DConsV2(element, this)
-
+  def add[B >:A](element: B): DConsV2[B] = new DConsV2(element, this)
+// def add[B >: A](element: B): MyList[B] = new Cons(element, this)
   override def toString: String = {
     s"$head " + this.tail.toString
   }
@@ -48,4 +50,9 @@ object Driver2 extends App{
 
   //Test the toString method
   println(s"Printing to string: ${ll.toString}")
+
+  //Try with another type
+  val stringList = new DConsV2("My String 1",  DEmptyListV2)
+  println(s"Printing string list: ${stringList.toString}")
+  println(s"String list head ${stringList.head}")
 }
