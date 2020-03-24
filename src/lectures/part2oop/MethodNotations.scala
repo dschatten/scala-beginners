@@ -6,6 +6,22 @@ import scala.language.{postfixOps}
   */
 object MethodNotations extends App {
 
+  /*
+    1.  Overload the + operator
+        mary + "the rockstar" => new person "Mary (the rockstar)"
+
+    2.  Add an age to the Person class
+        Add a unary + operator => new person with the age + 1
+        +mary => mary with the age incrementer
+
+    3.  Add a "learns" method in the Person class => "Mary learns Scala"
+        Add a learnsScala method, calls learns method with "Scala".
+        Use it in postfix notation.
+
+    4.  Overload the apply method
+        mary.apply(2) => "Mary watched Inception 2 times"
+   */
+
   class Person(val name: String, favoriteMovie: String, val age: Int = 0) {
     def likes(movie: String): Boolean = movie == favoriteMovie
     def +(person: Person): String = s"${this.name} is hanging out with ${person.name}"

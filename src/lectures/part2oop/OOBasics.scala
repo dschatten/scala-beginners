@@ -5,6 +5,10 @@ package lectures.part2oop
   */
 object OOBasics extends App {
 
+  val myPeep = new Person()
+  println(s"My Peep's age is: ${myPeep.age}" )
+  println(myPeep.toString())
+
   // constructor
   class Person(name: String, val age: Int = 0) {
     // body
@@ -75,19 +79,21 @@ class Novel(name: String, year: Int, author: Writer) {
     - overload inc/dec to receive an amount
  */
 class Counter(val count: Int = 0) {
+  val magicNumber: Int = -1
+
   def inc = {
     println("incrementing")
     new Counter(count + 1)  // immutability
   }
 
+  def inc(n: Int): Counter = {
+    if (n <= 0) this
+    else inc.inc(n-1)   //tail recursive
+  }
+
   def dec = {
     println("decrementing")
     new Counter(count - 1)
-  }
-
-  def inc(n: Int): Counter = {
-    if (n <= 0) this
-    else inc.inc(n-1)
   }
 
   def dec(n: Int): Counter =
@@ -97,4 +103,13 @@ class Counter(val count: Int = 0) {
   def print = println(count)
 }
 
+class  DaveCounter(val count: Int = 0) {
+  def getCurrentCount = this.count
+  def increment: DaveCounter = {
+    new DaveCounter(this.count + 1)
+  }
+  def increment(amount: Int): DaveCounter = {
+    new DaveCounter(this.count + amount)
+  }
+}
 // class parameters are NOT FIELDS

@@ -33,6 +33,10 @@ object AbstractDataTypes extends App {
   val croc = new Crocodile
   croc.eat(dog)
 
+  val myAnimal = new Animal {
+    override def eat: Unit = ???
+  }
+
   // traits vs abstract classes
   // 1 - traits do not have constructor parameters
   // 2 - multiple traits may be  inherited by the same class

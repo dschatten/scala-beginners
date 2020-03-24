@@ -29,11 +29,15 @@ object Inheritance extends App {
   class Adult(name: String, age: Int, idCard: String) extends Person(name)
 
   // overriding
-  class Dog(override val creatureType: String) extends Animal {
+  final class Dog(override val creatureType: String) extends Animal {
 //    override val creatureType = "domestic"
     override def eat = {
       super.eat
       println("crunch, crunch")
+
+       def eatIt(myString: String) = {
+        println(myString)
+      }
     }
   }
   val dog = new Dog("K9")
