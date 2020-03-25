@@ -55,4 +55,6 @@ object Driver2 extends App{
   val stringList = new DConsV2("My String 1",  DEmptyListV2)
   println(s"Printing string list: ${stringList.toString}")
   println(s"String list head ${stringList.head}")
+  println(s"Printing string list with an added value: ${stringList.add("Another chunklet").toString}")
+
 }
