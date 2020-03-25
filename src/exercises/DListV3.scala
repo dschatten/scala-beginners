@@ -4,6 +4,7 @@ import exercises.ListTest.listOfIntegers
 
 //TODO Review all of this, it's quite confusing
 //TODO DRS - Don't really understand why he said to make this contravariant
+//TODO DRS - In lecutre 24 ~13 minutes in, he deletes both of these traits
 trait MyTransformer[-A, B]{
   def transform(myElem: A) : B
 }
