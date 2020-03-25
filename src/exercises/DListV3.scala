@@ -30,6 +30,9 @@ abstract class DListV3 [+A]{
   def filter(predicate: MyPredicate[A]) : DListV3[A]
 
   override def toString: String = super.toString
+
+  // concatenation
+  def ++[B >: A](list: DListV3[B]): DListV3[B]
 }
 
 //Define as object, doesn't need to be instantiated
@@ -47,6 +50,8 @@ case object DEmptyListV3 extends DListV3[Nothing]{
   def map[B](transformer: MyTransformer[Nothing, B]) : DListV3[B] = DEmptyListV3
   def flatMap[B](transformer: MyTransformer[Nothing, DListV3[B]]): DListV3[B]= DEmptyListV3
   def filter(predicate: MyPredicate[Nothing]) : DListV3 [Nothing]= DEmptyListV3
+
+  def ++[B >: Nothing](list: DListV3[B]): DListV3[B] = list
 }
 
 case class DConsV3[+A](h: A, t: DListV3[A]) extends DListV3[A]{
@@ -59,8 +64,6 @@ case class DConsV3[+A](h: A, t: DListV3[A]) extends DListV3[A]{
     s"$head " + this.tail.toString
   }
 
-//  override def flatMap[B](transformer: MyTransformer[B, DListV3[B]]): DListV3[B] = ???
-
   //TODO: This actually kinda makes sense as far as how he's doing the filtering
   def filter(predicate: MyPredicate[A]): DListV3[A] =
     if(predicate.test(h)) new DConsV3(h, t.filter(predicate))
@@ -70,7 +73,18 @@ case class DConsV3[+A](h: A, t: DListV3[A]) extends DListV3[A]{
   def map[B](transformer: MyTransformer[A, B]) : DListV3[B] =
     new DConsV3(transformer.transform(h), t.map(transformer))
 
-  def flatMap[B](transformer: MyTransformer[A, DListV3[B]]): DListV3[B] = ???
+  //Add a concatenation method for use by FlatMap
+  /*
+  [1,2] ++ [3,4,5]
+  = new Cons(1, [2] ++ [3,4,5])
+  = new Cons(1, new Cons(2, Empty ++ [3,4,5]))
+  = new Cons(1, new Cons(2, new Cons(3, new Cons(4, new Cons(5)))))
+ */
+  //TODO: Confusing
+  def ++[B >: A](list: DListV3[B]): DListV3[B] =  new DConsV3(h, t ++ list)
+  def flatMap[B](transformer: MyTransformer[A, DListV3[B]]): DListV3[B]  =
+    transformer.transform(h) ++ t.flatMap(transformer)
+
 
 }
 
@@ -103,8 +117,23 @@ object Driver3 extends App{
   //TODO - Review all of this crap
   //So we're directly instantiating a trait - MyTransformer....and providing a concrete implementation for it's override method
   //This is an Anonymous Class!!
+  /*
+  [1,2,3].map(n * 2)
+    = new Cons(2, [2,3].map(n * 2))
+    = new Cons(2, new Cons(4, [3].map(n * 2)))
+    = new Cons(2, new Cons(4, new Cons(6, Empty.map(n * 2))))
+    = new Cons(2, new Cons(4, new Cons(6, Empty))))
+ */
   println("Transform list of integers by double: ")
   println(listofIntegers.map(new MyTransformer[Int, Int] {
     override def transform(elem: Int) : Int = elem * 2
+  }))
+
+  //TODO - Review all of this stuff
+  println("Filtered list of evens: ")
+  println(listofIntegers.filter(new MyPredicate[Int] {
+    override def test(myElem: Int): Boolean = {
+      if (myElem % 2 == 0)  true else false
+    }
   }))
 }
