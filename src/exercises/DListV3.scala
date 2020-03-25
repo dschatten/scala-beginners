@@ -1,5 +1,7 @@
 package exercises
 
+import exercises.ListTest.listOfIntegers
+
 //TODO Review all of this, it's quite confusing
 //TODO DRS - Don't really understand why he said to make this contravariant
 trait MyTransformer[-A, B]{
@@ -136,4 +138,15 @@ object Driver3 extends App{
       if (myElem % 2 == 0)  true else false
     }
   }))
+
+  val anotherListofIntegers = new DConsV3(6, new DConsV3(5, new DConsV3(4, DEmptyListV3)))
+  println("Concatenation: ")
+  println(anotherListofIntegers ++ listofIntegers)
+
+  //TODO Yikes
+  println("Flat Map stuff: ")
+  println(listofIntegers.flatMap(new MyTransformer[Int, DListV3[Int]]{
+    override def transform(elem: Int): DListV3[Int] = new DConsV3(elem, new DConsV3(elem + 1, DEmptyListV3))
+  }).toString)
+
 }
