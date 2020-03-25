@@ -15,23 +15,22 @@ abstract class DListV2 [+A]{
 }
 
 //Define as object, doesn't need to be instantiated
-object DEmptyListV2 extends DListV2[Nothing]{
+case object DEmptyListV2 extends DListV2[Nothing]{
   def head: Nothing = throw new NoSuchElementException
   def tail: DListV2[Nothing] = throw new NoSuchElementException
   def isEmpty: Boolean = true
   def add[B >: Nothing](element: B): DListV2[B] = new DConsV2(element, DEmptyListV2)
-  //  def add[B >: Nothing](element: B): MyList[B] = new Cons(element, Empty)
 
   override def toString: String = " "
 }
 
   //case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
-class DConsV2[+A](h: A, t: DListV2[A]) extends DListV2[A]{
+case class DConsV2[+A](h: A, t: DListV2[A]) extends DListV2[A]{
   def head: A = h
   def tail: DListV2[A] = t
   def isEmpty: Boolean = false
   def add[B >:A](element: B): DConsV2[B] = new DConsV2(element, this)
-// def add[B >: A](element: B): MyList[B] = new Cons(element, this)
+
   override def toString: String = {
     s"$head " + this.tail.toString
   }

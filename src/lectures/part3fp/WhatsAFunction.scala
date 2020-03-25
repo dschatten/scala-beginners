@@ -29,6 +29,11 @@ object WhatsAFunction extends App {
 
   // ALL SCALA FUNCTIONS ARE OBJECTS
 
+  def drsConcatenator: ((String, String) => String) = new ((String, String) => String){
+    override def apply(a: String, b: String): String = a.concat(b)
+  }
+  println(drsConcatenator("My String", "Next String"))
+
   /*
     1.  a function which takes 2 strings and concatenates them
     2.  transform the MyPredicate and MyTransformer into function types
