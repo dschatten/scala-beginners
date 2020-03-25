@@ -29,10 +29,7 @@ object WhatsAFunction extends App {
 
   // ALL SCALA FUNCTIONS ARE OBJECTS
 
-  def drsConcatenator: ((String, String) => String) = new ((String, String) => String){
-    override def apply(a: String, b: String): String = a.concat(b)
-  }
-  println(drsConcatenator("My String", "Next String"))
+
 
   /*
     1.  a function which takes 2 strings and concatenates them
@@ -42,17 +39,18 @@ object WhatsAFunction extends App {
         - how to do it
    */
 
+  def drsConcatenator: ((String, String) => String) = new ((String, String) => String){
+    override def apply(a: String, b: String): String = a.concat(b)
+  }
+
   def concatenator: (String, String) => String = new Function2[String, String, String] {
     override def apply(a: String, b: String): String = a + b
   }
   println(concatenator("Hello ", "Scala"))
+  println(drsConcatenator("My String", "Next String"))
 
   // Function1[Int, Function1[Int, Int]]
-  val superAdder: Function1[Int, Function1[Int, Int]] = new Function1[Int, Function1[Int, Int]] {
-    override def apply(x: Int): Function1[Int, Int] = new Function1[Int, Int] {
-      override def apply(y: Int): Int = x + y
-    }
-  }
+  val superAdder: (Int) => ((Int) => Int) = (x: Int) => (y: Int) => x + y
 
   val adder3 = superAdder(3)
   println(adder3(4))
