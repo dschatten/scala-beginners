@@ -35,7 +35,7 @@ object MapFlatmapFilterFor extends App {
 
   // "iterating"
   val combinations = numbers.flatMap(n => chars.flatMap(c => colors.map(color => "" + c + n + "-" + color)))
-  val combinations1 = chars.flatMap(c => numbers.map(n => c + n + " "))
+  val combinations1 = chars.flatMap(c => numbers.map(n => c.toString + n.toString + " "))
   println(s"List combinations: $combinations")
   println(s"List combinations1: $combinations1")   //Yay!    a1, a2, a3, a4, b1, b2, b3....
 
@@ -49,6 +49,13 @@ object MapFlatmapFilterFor extends App {
     color <- colors
   } yield "" + c + n + "-" + color
   println(forCombinations)
+
+  //DRS - use a for comprehension for combinations1 to make the code more readable
+  val forCombinations1 = for {
+    c <- chars
+    n <- numbers
+  }yield c.toString + n.toString + " "
+  println(s"DRS List combinations1 using a for comprehension: $forCombinations1")
 
   for {
     n <- numbers
