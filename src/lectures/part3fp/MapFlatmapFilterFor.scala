@@ -18,7 +18,7 @@ object MapFlatmapFilterFor extends App {
 
   // flatMap
   val toPair = (x: Int) => List(x, x+1)
-  println(list.flatMap(toPair))
+  println(s"List to flatmap using a simple function: ${list.flatMap(toPair)}")
 
   // print all combinations between two lists
   val numbers = List(1,2,3,4)
@@ -27,10 +27,17 @@ object MapFlatmapFilterFor extends App {
 
   // List("a1", "a2"... "d4")
 
-  // "iterating"
-  val combinations = numbers.filter(_ % 2 == 0).flatMap(n => chars.flatMap(c => colors.map(color => "" + c + n + "-" + color)))
-  println(combinations)
+  //Attempt, not correct
+//  val toCombination = (a: Char, b:List[Int]) => List(b.foreach(a.toString().concat(b + " ")))
+//  println(s"Attempt to concat: ${chars.flatMap(toCombination(_, numbers))}")
 
+//  chars.foreach()
+
+  // "iterating"
+  val combinations = numbers.flatMap(n => chars.flatMap(c => colors.map(color => "" + c + n + "-" + color)))
+  val combinations1 = chars.flatMap(c => numbers.map(n => c + n + " "))
+  println(s"List combinations: $combinations")
+  println(s"List combinations1: $combinations1")   //Yay!    a1, a2, a3, a4, b1, b2, b3....
 
   // foreach
   list.foreach(println)
