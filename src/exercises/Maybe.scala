@@ -3,7 +3,7 @@ package exercises
 /**
   * Created by Daniel.
   */
-abstract class Maybe[+T] {
+abstract class Maybe[+T] { //covariant
 
   def map[B](f: T => B): Maybe[B]
   def flatMap[B](f: T => Maybe[B]): Maybe[B]
