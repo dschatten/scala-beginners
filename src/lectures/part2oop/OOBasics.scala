@@ -88,7 +88,7 @@ class Counter(val count: Int = 0) {
 
   def inc(n: Int): Counter = {
     if (n <= 0) this
-    else inc.inc(n-1)   //tail recursive
+    else inc.inc(n-1)   //tail recursive - DRS: This also represents "fluent style" programming, where you return objects and chain methods together- P. 167 of Scala Cookbook
   }
 
   def dec = {
