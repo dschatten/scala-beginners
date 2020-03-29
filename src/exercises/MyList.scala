@@ -166,4 +166,13 @@ object ListTest extends App {
     string <- listOfStrings
   } yield n + "-" + string
   println(combinations)
+
+  //DRS - Another for comprehension
+  val myIntegers: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
+  val myChars: MyList[Char] = new Cons('a', new Cons('b', new Cons('c', Empty)))
+  val combinations1 = for {
+    n <- myIntegers
+    c <- myChars
+  } yield n.toString + c.toString + " "
+  println(combinations1)
 }
