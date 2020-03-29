@@ -1,7 +1,8 @@
 package exercises
 
-import exercises.ListTest.listOfIntegers
-
+/*
+  Collection data structure for at most one element.
+ */
 abstract class DMaybe[+A] {
   def map[B](transformer: A => B): DMaybe[B]
   def flatMap[B](transformer: A => DMaybe[B]): DMaybe[B]
