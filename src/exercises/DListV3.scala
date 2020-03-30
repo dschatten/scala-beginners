@@ -2,14 +2,13 @@ package exercises
 
 import exercises.ListTest.listOfIntegers
 
-//TODO Review all of this, it's quite confusing
-//TODO DRS - Don't really understand why he said to make this contravariant
-//TODO DRS - In lecutre 24 ~13 minutes in, he deletes both of these traits
+//TODO DRS - Why is this contravariant?
+//TODO DRS - In lecutre 24 ~13 minutes in, these traits are removed (syntactic sugar)
 trait MyTransformer[-A, B]{
   def transform(myElem: A) : B
 }
 
-//TODO DRS - Don't really understand why he said to make this contravariant
+//TODO DRS - Why is this contravariant?
 trait MyPredicate[-T]{
   def test(myElem: T): Boolean
 }
@@ -25,8 +24,6 @@ abstract class DListV3 [+A]{
   def isEmpty: Boolean
   def add[B >:A](element: B): DListV3[B]
 
-  //TODO Confusing Methods
-  //TODO DRS - WOuldn't the trait be implemented by the abstract class?    Here we're
   //defining a method that's referring to a trait in it's signature....
   def map[B](transformer: MyTransformer[A, B]) : DListV3[B]
   def flatMap[B](transformer: MyTransformer[A, DListV3[B]]): DListV3[B]
@@ -47,8 +44,6 @@ case object DEmptyListV3 extends DListV3[Nothing]{
 
   override def toString: String = " "
 
-  //TODO - The confusing stuff
-  //TODO - He copied these three methods from the abstract class, then replaced 'A' with 'Nothing'
   //The one thing that's not confusing is that each of these methods in this class just return an empty list..think I got that
   def map[B](transformer: MyTransformer[Nothing, B]) : DListV3[B] = DEmptyListV3
   def flatMap[B](transformer: MyTransformer[Nothing, DListV3[B]]): DListV3[B]= DEmptyListV3
@@ -67,12 +62,10 @@ case class DConsV3[+A](h: A, t: DListV3[A]) extends DListV3[A]{
     s"$head " + this.tail.toString
   }
 
-  //TODO: This actually kinda makes sense as far as how he's doing the filtering
   def filter(predicate: MyPredicate[A]): DListV3[A] =
     if(predicate.test(h)) new DConsV3(h, t.filter(predicate))
     else t.filter(predicate)
 
-  //TODO: This kinda sorta makes sense
   def map[B](transformer: MyTransformer[A, B]) : DListV3[B] =
     new DConsV3(transformer.transform(h), t.map(transformer))
 
@@ -83,7 +76,6 @@ case class DConsV3[+A](h: A, t: DListV3[A]) extends DListV3[A]{
   = new Cons(1, new Cons(2, Empty ++ [3,4,5]))
   = new Cons(1, new Cons(2, new Cons(3, new Cons(4, new Cons(5)))))
  */
-  //TODO: Confusing
   def ++[B >: A](list: DListV3[B]): DListV3[B] =  new DConsV3(h, t ++ list)
   def flatMap[B](transformer: MyTransformer[A, DListV3[B]]): DListV3[B]  =
     transformer.transform(h) ++ t.flatMap(transformer)
@@ -117,7 +109,6 @@ object Driver3 extends App{
   println(s"String list head ${stringList.head}")
   println(s"Printing string list with an added value: ${stringList.add("Another chunklet").toString}")
 
-  //TODO - Review all of this crap
   //So we're directly instantiating a trait - MyTransformer....and providing a concrete implementation for it's override method
   //This is an Anonymous Class!!
   /*
@@ -132,7 +123,6 @@ object Driver3 extends App{
     override def transform(elem: Int) : Int = elem * 2
   }))
 
-  //TODO - Review all of this stuff
   println("Filtered list of evens: ")
   println(listofIntegers.filter(new MyPredicate[Int] {
     override def test(myElem: Int): Boolean = {
@@ -144,7 +134,6 @@ object Driver3 extends App{
   println("Concatenation: ")
   println(anotherListofIntegers ++ listofIntegers)
 
-  //TODO Yikes
   println("Flat Map stuff: ")
   println(listofIntegers.flatMap(new MyTransformer[Int, DListV3[Int]]{
     override def transform(elem: Int): DListV3[Int] = new DConsV3(elem, new DConsV3(elem + 1, DEmptyListV3))

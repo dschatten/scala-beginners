@@ -24,7 +24,7 @@ abstract class DListV4 [+A]{
   //def flatMap[B](transformer: MyTransformer[A, DListV4[B]]): DListV4[B]
   //def filter(predicate: MyPredicate[A]) : DListV4[A]
 
-  //TODO: These are more readable with the MyTransformer and MyPredicate traits
+  //TODO: More readable with the MyTransformer and MyPredicate traits?
   //DRS - We've just made these into higher order functions
   def map[B](transformer: A => B) : DListV4[B]
   def flatMap[B](transformer: A => DListV4[B]): DListV4[B]
@@ -64,12 +64,10 @@ case class DConsV4[+A](h: A, t: DListV4[A]) extends DListV4[A]{
     s"$head " + this.tail.toString
   }
 
-  //TODO: This actually kinda makes sense as far as how he's doing the filtering
   def filter(predicate: A => Boolean): DListV4[A] =
     if(predicate(h)) new DConsV4(h, t.filter(predicate))
     else t.filter(predicate)
 
-  //TODO: This kinda sorta makes sense
   def map[B](transformer: A => B) : DListV4[B] =
     new DConsV4(transformer(h), t.map(transformer))
 
@@ -80,7 +78,6 @@ case class DConsV4[+A](h: A, t: DListV4[A]) extends DListV4[A]{
   = new Cons(1, new Cons(2, Empty ++ [3,4,5]))
   = new Cons(1, new Cons(2, new Cons(3, new Cons(4, new Cons(5)))))
  */
-  //TODO: Confusing
   def ++[B >: A](list: DListV4[B]): DListV4[B] =  new DConsV4(h, t ++ list)
   def flatMap[B](transformer: A => DListV4[B]): DListV4[B]  =
     transformer(h) ++ t.flatMap(transformer)
@@ -114,7 +111,6 @@ object Driver4 extends App{
   println(s"String list head ${stringList.head}")
   println(s"Printing string list with an added value: ${stringList.add("Another chunklet").toString}")
 
-  //TODO - Review all of this crap
   //So we're directly instantiating a trait - MyTransformer....and providing a concrete implementation for it's override method
   //This is an Anonymous Class!!
   /*
@@ -129,7 +125,6 @@ object Driver4 extends App{
     override def apply(elem: Int) : Int = elem * 2
   }))
 
-  //TODO - Review all of this stuff
   println("Filtered list of evens: ")
   println(listofIntegers.filter(new Function1[Int, Boolean] {
     override def apply(myElem: Int): Boolean = {
@@ -141,7 +136,6 @@ object Driver4 extends App{
   println("Concatenation: ")
   println(anotherListofIntegers ++ listofIntegers)
 
-  //TODO Yikes
   println("Flat Map stuff: ")
   println(listofIntegers.flatMap(new Function1[Int, DListV4[Int]]{
     override def apply(elem: Int): DListV4[Int] = new DConsV4(elem, new DConsV4(elem + 1, DEmptyListV4))

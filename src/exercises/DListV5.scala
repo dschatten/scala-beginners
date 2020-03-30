@@ -52,12 +52,10 @@ case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
     s"$head " + this.tail.toString
   }
 
-  //TODO: This actually kinda makes sense as far as how he's doing the filtering
   def filter(predicate: A => Boolean): DListV5[A] =
     if(predicate(h)) new DConsV5(h, t.filter(predicate))
     else t.filter(predicate)
 
-  //TODO: This kinda sorta makes sense
   def map[B](transformer: A => B) : DListV5[B] =
     new DConsV5(transformer(h), t.map(transformer))
 
@@ -68,7 +66,6 @@ case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
   = new Cons(1, new Cons(2, Empty ++ [3,4,5]))
   = new Cons(1, new Cons(2, new Cons(3, new Cons(4, new Cons(5)))))
  */
-  //TODO: Confusing
   def ++[B >: A](list: DListV5[B]): DListV5[B] =  new DConsV5(h, t ++ list)
   def flatMap[B](transformer: A => DListV5[B]): DListV5[B]  =
     transformer(h) ++ t.flatMap(transformer)
@@ -99,7 +96,7 @@ object Driver5 extends App{
 
 
   println("Transform list of integers by double: ")
-  //TODO - Review this
+
   //DRS - Old way, commented out.    Replace with Lambda
 //  println(listofIntegers.map(new Function1[Int, Int] {
 //    override def apply(elem: Int) : Int = elem * 2
@@ -109,7 +106,7 @@ object Driver5 extends App{
   println(listofIntegers.map(_ * 2).toString)
 
   println("Filtered list of evens: ")
-  //TODO - Review This
+
   //DRS - Old Way
 //  println(listofIntegers.filter(new Function1[Int, Boolean] {
 //    override def apply(myElem: Int): Boolean = {
@@ -124,15 +121,12 @@ object Driver5 extends App{
   println("Concatenation: ")
   println(anotherListofIntegers ++ listofIntegers)
 
-  //TODO Yikes
-  //TODO - Removed old way and converted to lambda
 //  println("Flat Map stuff: ")
 //  println(listofIntegers.flatMap(new Function1[Int, DListV5[Int]]{
 //    override def apply(elem: Int): DListV5[Int] = new DConsV5(elem, new DConsV5(elem + 1, DEmptyListV5))
 //  }).toString)
 
   //DRS - Here is the lambda
-  //TODO - Still don't understand this
   println(listofIntegers.flatMap(elem => new DConsV5(elem, new DConsV5(elem + 1, DEmptyListV5))).toString)
 
   println("Super lambda-version of the adder as opposed to curried version: ")

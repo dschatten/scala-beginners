@@ -1,5 +1,5 @@
 package exercises
-//TODO - Review these files and see how they change among the newer versions.   This one is the most understandable.
+//TODO - Review this class implementation and see how it illustrates different concepts through the versions
 
 /*
 Abstract class to build out common List operations
