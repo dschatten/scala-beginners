@@ -46,6 +46,8 @@ object HandlingFailure extends App {
 
   /*
     Exercise
+
+    1. Print the HTML if you can obtain a connection.
    */
   val host = "localhost"
   val port = "8080"
@@ -69,6 +71,12 @@ object HandlingFailure extends App {
       else throw new RuntimeException("Someone else took the port")
 
     def getSafeConnection(host: String, port: String): Try[Connection] = Try(getConnection(host, port))
+  }
+
+  //DRS Implementation for #1
+  for(a <- 1 to 10){
+    val aConnection = Try{new Connection().get(host)}
+    println(if (aConnection.isSuccess) aConnection else "Connection failure")
   }
 
   // if you get the html page from the connection, print it to the console i.e. call renderHTML
