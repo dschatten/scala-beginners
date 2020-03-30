@@ -2,7 +2,7 @@ package exercises
 
 import exercises.ListTest.listOfIntegers
 
-//TODO: DRS: In this lecture we convert FunctionX calls with lambdas - Lecture 25
+//TODO: DRS: In this lecture we convert FunctionX calls with lambdas - Lecture 25.    Also added Lecture 26.
 //and rewrite the 'special' adder as an anonymous function
 
 abstract class DListV5 [+A]{
@@ -22,6 +22,8 @@ abstract class DListV5 [+A]{
 
   // concatenation
   def ++[B >: A](list: DListV5[B]): DListV5[B]
+
+  def forEach(f: A => Unit)
 }
 
 //Define as object, doesn't need to be instantiated
@@ -40,6 +42,7 @@ case object DEmptyListV5 extends DListV5[Nothing]{
   def filter(predicate: Nothing => Boolean) : DListV5 [Nothing]= DEmptyListV5
 
   def ++[B >: Nothing](list: DListV5[B]): DListV5[B] = list
+  def forEach(f: Nothing => Unit) = DEmptyListV5
 }
 
 case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
@@ -69,6 +72,11 @@ case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
   def ++[B >: A](list: DListV5[B]): DListV5[B] =  new DConsV5(h, t ++ list)
   def flatMap[B](transformer: A => DListV5[B]): DListV5[B]  =
     transformer(h) ++ t.flatMap(transformer)
+
+  def forEach(f: A => Unit) = {
+    f(h)
+    t.forEach(f)
+  }
 
 
 }
@@ -132,4 +140,8 @@ object Driver5 extends App{
   println("Super lambda-version of the adder as opposed to curried version: ")
   val superAdd = (x: Int) => (y: Int) => x + y
   println(superAdd(3)(4))
+
+  println("For Each")
+  println(listofIntegers)
+  listofIntegers.forEach(println)
 }
