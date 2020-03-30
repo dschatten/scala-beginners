@@ -24,6 +24,7 @@ abstract class DListV5 [+A]{
   def ++[B >: A](list: DListV5[B]): DListV5[B]
 
   def forEach(f: A => Unit)
+  def zipWith[B, C](l: DListV5[B], zip: (A, B) => C ) : DListV5[C]
 }
 
 //Define as object, doesn't need to be instantiated
@@ -43,6 +44,9 @@ case object DEmptyListV5 extends DListV5[Nothing]{
 
   def ++[B >: Nothing](list: DListV5[B]): DListV5[B] = list
   def forEach(f: Nothing => Unit) = DEmptyListV5
+  def zipWith[B, C](l: DListV5[B], zip: (Nothing, B) => C ) : DListV5[C] = DEmptyListV5
+
+
 }
 
 case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
@@ -78,6 +82,9 @@ case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
     t.forEach(f)
   }
 
+  def zipWith[B, C](l: DListV5[B], zip: (A, B) => C ) : DListV5[C] = {
+    new DConsV5(zip(h, l.head), t.zipWith(l.tail, zip))
+  }
 
 }
 
@@ -144,4 +151,8 @@ object Driver5 extends App{
   println("For Each")
   println(listofIntegers)
   listofIntegers.forEach(println)
+
+  println("Zip With")
+  val zipList = new DConsV5(3, new DConsV5(2, new DConsV5(1, DEmptyListV5)))
+  println(listofIntegers.zipWith[Int, Int](zipList, (x, y) => x + y))
 }
