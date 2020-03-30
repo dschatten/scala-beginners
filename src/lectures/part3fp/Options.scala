@@ -45,6 +45,8 @@ object Options extends App {
   val config: Map[String, String] = Map(
     // fetched from elsewhere
     "host" -> "176.45.36.1",
+    //For testing
+//    "noHost" -> "whatever",
     "port" -> "80"
   )
 
@@ -60,13 +62,13 @@ object Options extends App {
   }
 
   // try to establish a connection, if so - print the connect method
-  val drsHost = config("host")  //Option of String
-  val drsPort = config("port")   //Option of String
+  val drsHost = config.get("host")  //Option of String
+  val drsPort = config.get("port")   //Option of String
 
 
-  if(!drsHost.isEmpty && !port.isEmpty) {  //Unsafe! - See below, use of flatMap to leverage Options
+  if(!drsHost.isEmpty && !port.isEmpty) {  //See below on for-comprehension or flatMap.
     for (i <- 1 to 5) {  //try this a couple of times to see how the randomness plays out.
-      val connection = Connection(drsHost, drsPort).getOrElse(
+      val connection = Connection(drsHost.toString, drsPort.toString).getOrElse(
         println("Connection could not be established.")
       )
     }
@@ -95,7 +97,7 @@ object Options extends App {
   val connectionStatus = connection.map(c => c.connect)
   // if (connectionStatus == null) println(None) else print (Some(connectionstatus.get))
   println(connectionStatus)
-  /* //Unsafe
+  /*
     if (status != null)
       println(status)
    */
