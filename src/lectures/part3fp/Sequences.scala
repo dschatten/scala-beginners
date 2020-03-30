@@ -68,7 +68,7 @@ object Sequences extends App {
   val numbersList = (1 to maxCapacity).toList
   val numbersVector = (1 to maxCapacity).toVector
 
-  // keeps reference to tail
+  // keeps reference t o tail
   // updating an element in the middle takes long
   println(getWriteTime(numbersList))
   // depth of the tree is small

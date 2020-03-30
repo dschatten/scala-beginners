@@ -2,9 +2,7 @@ package lectures.part3fp
 
 import scala.annotation.tailrec
 
-/**
-  * Created by Daniel.
-  */
+
 object TuplesAndMaps extends App {
 
   // tuples = finite ordered "lists"
@@ -20,6 +18,9 @@ object TuplesAndMaps extends App {
   val phonebook = Map(("Jim", 555), "Daniel" -> 789, ("JIM", 9000)).withDefaultValue(-1)
   // a -> b is sugar for (a, b)
   println(phonebook)
+  println(s"Phonebook lowercase Jim value: ${phonebook.get("Jim")}")
+  println(s"Phonebook uppercase Jim value: ${phonebook.get("JIM")}")
+
 
   // map ops
   println(phonebook.contains("Jim"))
@@ -62,7 +63,66 @@ object TuplesAndMaps extends App {
         - how many people have NO friends
         - if there is a social connection between two people (direct or not)
    */
-  def add(network: Map[String, Set[String]], person: String): Map[String, Set[String]] =
+
+  case class SocialNetwork(network : Map[String, Vector[String]]) {
+    //(Jim, Vector[Bob, Jill, Biff, etc.]
+    def add(person : String): SocialNetwork = {
+      if (!person.isEmpty && !network.contains(person.toLowerCase())) {
+        return SocialNetwork(network + (person.toLowerCase -> Vector("")))
+      }
+      this
+    }
+
+    def friend(person : String, friend: String): SocialNetwork = {
+      if (!person.isEmpty ) {
+        val pVec: Vector[String] = network(person.toLowerCase) :+ friend
+
+        //We'll just assume that some people friend others but don't get friended back!!!   Heh.
+        return SocialNetwork(network + (person.toLowerCase -> pVec))
+      }
+      this
+    }
+
+    def numberOfFriends(person : String): Int = {
+      network(person.toLowerCase).length
+    }
+
+    def unfriend(person: String, unfriend: String): SocialNetwork = {
+        val pVec: Vector[String] = network(person.toLowerCase)
+        return SocialNetwork(network + (person.toLowerCase -> pVec.filter(! _.equalsIgnoreCase(unfriend))))
+    }
+
+    def folksSansFriends(): Int = {
+      network.count(_._2.isEmpty)
+    }
+
+    def mostFriends(): String = {
+      network.maxBy(pair => pair._2.size)._1
+    }
+
+    def hasASocialConnection(person: String, possibleFriend: String): Boolean ={
+      if(!person.isEmpty && !possibleFriend.isEmpty){
+        val pVec: Vector[String] = network(person.toLowerCase)
+        pVec.contains(possibleFriend)
+      }
+      else {false}
+     }
+  }
+
+  val network: Map[String, Vector[String]] = Map("bill" -> Vector("bob"), "bob"->Vector("bill"), "jill"->Vector("emily", "susan"))
+  val sn = new SocialNetwork(network)
+
+//  sn = sn.add("Bob")
+  println(s"Dave's social network : $sn")
+  println(s"Adding a friend: ${sn.friend("bob", "emily")}")
+  println(s"Bob has ${sn.numberOfFriends("bob")} friends")
+  println(s"Bob has unfriended Bill: ${sn.unfriend("bob", "bill")}")
+  println(s"Jill has a social connection to  emily ${sn.hasASocialConnection("jill", "emily")}")
+  println(s"Jill has a social connection to  james ${sn.hasASocialConnection("jill", "james")}")
+
+
+
+  /*def add(network: Map[String, Set[String]], person: String): Map[String, Set[String]] =
     network + (person -> Set())
 
   def friend(network: Map[String, Set[String]], a: String, b: String): Map[String, Set[String]] = {
@@ -135,5 +195,7 @@ object TuplesAndMaps extends App {
 
   println(socialConnection(testNet, "Mary", "Jim"))
   println(socialConnection(network, "Mary", "Bob"))
+  */
+
 
 }
