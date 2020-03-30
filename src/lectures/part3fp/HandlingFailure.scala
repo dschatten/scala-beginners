@@ -95,7 +95,7 @@ object HandlingFailure extends App {
     html <- connection.getSafe("/home")
   } renderHTML(html)
 
-  /*
+  /* DRS - this is would it would look like in an imperative language....
     try {
       connection = HttpService.getConnection(host, port)
       try {
