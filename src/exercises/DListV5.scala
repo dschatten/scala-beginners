@@ -25,6 +25,7 @@ abstract class DListV5 [+A]{
 
   def forEach(f: A => Unit)
   def zipWith[B, C](l: DListV5[B], zip: (A, B) => C ) : DListV5[C]
+  def fold[B](start: B)(func: (B, A) => B): B
 }
 
 //Define as object, doesn't need to be instantiated
@@ -45,6 +46,7 @@ case object DEmptyListV5 extends DListV5[Nothing]{
   def ++[B >: Nothing](list: DListV5[B]): DListV5[B] = list
   def forEach(f: Nothing => Unit) = DEmptyListV5
   def zipWith[B, C](l: DListV5[B], zip: (Nothing, B) => C ) : DListV5[C] = DEmptyListV5
+  def fold[B](start: B)(func: (B, Nothing) => B): B = start
 
 
 }
@@ -84,6 +86,10 @@ case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
 
   def zipWith[B, C](l: DListV5[B], zip: (A, B) => C ) : DListV5[C] = {
     new DConsV5(zip(h, l.head), t.zipWith(l.tail, zip))
+  }
+
+  def fold[B](start: B)(func: (B, A) => B): B = {
+    t.fold(func(start, h))(func)
   }
 
 }
@@ -155,4 +161,7 @@ object Driver5 extends App{
   println("Zip With")
   val zipList = new DConsV5(3, new DConsV5(2, new DConsV5(1, DEmptyListV5)))
   println(listofIntegers.zipWith[Int, Int](zipList, (x, y) => x + y))
+
+  println("Folding")
+  println(listofIntegers.fold(5)((x, y) => x + y))
 }
