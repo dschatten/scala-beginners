@@ -60,13 +60,13 @@ object Options extends App {
   }
 
   // try to establish a connection, if so - print the connect method
-  val host = config("host")  //Option of String
-  val port = config("port")   //Option of String
+  val drsHost = config("host")  //Option of String
+  val drsPort = config("port")   //Option of String
 
 
-  if(!host.isEmpty && !port.isEmpty) {  //Unsafe! - See below, use of flatMap to leverage Options
+  if(!drsHost.isEmpty && !port.isEmpty) {  //Unsafe! - See below, use of flatMap to leverage Options
     for (i <- 1 to 5) {  //try this a couple of times to see how the randomness plays out.
-      val connection = Connection(host, port).getOrElse(
+      val connection = Connection(drsHost, drsPort).getOrElse(
         println("Connection could not be established.")
       )
     }
@@ -77,9 +77,9 @@ object Options extends App {
 
 
   // try to establish a connection, if so - print the connect method
-  /*val host = config.get("host")
+  val host = config.get("host")
   val port = config.get("port")
-  /*
+  /*  //Unsafe
     if (h != null)
       if (p != null)
         return Connection.apply(h, p)
@@ -95,7 +95,7 @@ object Options extends App {
   val connectionStatus = connection.map(c => c.connect)
   // if (connectionStatus == null) println(None) else print (Some(connectionstatus.get))
   println(connectionStatus)
-  /*
+  /* //Unsafe
     if (status != null)
       println(status)
    */
@@ -117,5 +117,5 @@ object Options extends App {
   } yield connection.connect
   forConnectionStatus.foreach(println)
 
-*/
+
 }
