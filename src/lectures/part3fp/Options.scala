@@ -60,14 +60,16 @@ object Options extends App {
   }
 
   // try to establish a connection, if so - print the connect method
-  val host = config("host")
-  val port = config("port")
-  if(!host.isEmpty() && !port.isEmpty()) {
+  val host = config("host")  //Option of String
+  val port = config("port")   //Option of String
+
+
+  if(!host.isEmpty && !port.isEmpty) {  //Unsafe! - See below, use of flatMap to leverage Options
     for (i <- 1 to 5) {  //try this a couple of times to see how the randomness plays out.
       val connection = Connection(host, port).getOrElse(
         println("Connection could not be established.")
       )
-  }
+    }
   }
   else{
     println("Either host or port were empty. ")
