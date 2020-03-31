@@ -26,6 +26,8 @@ abstract class DListV5 [+A]{
   def forEach(f: A => Unit)
   def zipWith[B, C](l: DListV5[B], zip: (A, B) => C ) : DListV5[C]
   def fold[B](start: B)(func: (B, A) => B): B
+//  def sort(compare: (A, A) => Int): MyList[A]
+
 }
 
 //Define as object, doesn't need to be instantiated
@@ -47,6 +49,7 @@ case object DEmptyListV5 extends DListV5[Nothing]{
   def forEach(f: Nothing => Unit) = DEmptyListV5
   def zipWith[B, C](l: DListV5[B], zip: (Nothing, B) => C ) : DListV5[C] = DEmptyListV5
   def fold[B](start: B)(func: (B, Nothing) => B): B = start
+//  def sort(compare: (Nothing, Nothing) => Int): MyList[Nothing] = DEmptyListV5
 
 
 }
@@ -91,6 +94,10 @@ case class DConsV5[+A](h: A, t: DListV5[A]) extends DListV5[A]{
   def fold[B](start: B)(func: (B, A) => B): B = {
     t.fold(func(start, h))(func)
   }
+
+//  def sort(compare: (A, A) => Int): MyList[A] = {
+//
+//  }
 
 }
 
@@ -164,4 +171,12 @@ object Driver5 extends App{
 
   println("Folding")
   println(listofIntegers.fold(5)((x, y) => x + y))
+
+  //TODO: Review currying and uncurrying
+  def toCurry(f: (Int, Int) => Int): (Int => Int => Int) =
+    x => y => f(x, y)
+
+  def fromCurry(f: Int => Int => Int): (Int, Int) => Int =
+    (x, y) => f(x)(y)
+
 }
