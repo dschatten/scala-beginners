@@ -84,15 +84,13 @@ object PatternMatching extends App {
     }
   }
     println(s"Print it out: ${printItOut(myExpr)}")
+  println(printItOut(Sum(Number(2), Number(3))))
+  println(printItOut(Sum(Sum(Number(2), Number(3)), Number(4))))
+  println(printItOut(Prod(Sum(Number(2), Number(1)), Number(3))))
+  println(printItOut(Prod(Sum(Number(2), Number(1)), Sum(Number(3), Number(4)))))
+  println(printItOut(Sum(Prod(Number(2), Number(1)), Number(3))))
 
-
-
-
-
-
-
-
-
+  ///////////////////////////////////////////////////////////////////////
 
   def show(e: Expr): String = e match {
     case Number(n) => s"$n"

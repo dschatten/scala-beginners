@@ -53,6 +53,7 @@ object PatternsEverywhere extends App {
 
   // big idea #4 - NEW
   // partial function based on PATTERN MATCHING
+  //mappedList and mappedList2 are equivalent - you're iterating over the list and mapping
   val mappedList = list.map {
     case v if v % 2 == 0 => v + " is even"
     case 1 => "the one"

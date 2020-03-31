@@ -42,7 +42,7 @@ object AllThePatterns extends App {
 //
 //  // 4 - case classes - constructor pattern
 //  // PMs can be nested with CCs as well
-//  val aList: MyList[Int] = Cons(1, Cons(2, Empty))
+  val aList: MyList[Int] = Cons(1, Cons(2, Empty))
 //  val matchAList = aList match {
 //    case Empty =>
 //    case Cons(head, Cons(subhead, subtail)) =>
@@ -64,12 +64,12 @@ object AllThePatterns extends App {
 //    case _ =>
 //  }
 //
-//  // 7 - name binding
-//  val nameBindingMatch = aList match {
-//    case nonEmptyList @ Cons(_, _) => // name binding => use the name later(here)
-//    case Cons(1, rest @ Cons(2, _)) => // name binding inside nested patterns
-//  }
-//
+  // 7 - name binding
+  val nameBindingMatch = aList match {
+    case nonEmptyList @ Cons(_, _) => println("nonEmptyList")// name binding => use the name later(here)
+    case Cons(1, rest @ Cons(2, _)) => println("rest")// name binding inside nested patterns
+  }
+
 //  // 8 - multi-patterns
 //  val multipattern = aList match {
 //    case Empty | Cons(0, _) => // compound pattern (multi-pattern)
